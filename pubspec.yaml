@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   flutter: { sdk: flutter }
+  flutter_bloc: ^9.0.0
   flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
@@ -18,7 +19,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/*
+    - assets/cal.png
 
   # fonts:
   #   - family: Schyler
