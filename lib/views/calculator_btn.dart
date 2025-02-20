@@ -1,4 +1,4 @@
-import 'package:calculator/constants/kjp_styles.dart';
+import 'package:calculator/core/constants/kjp_styles.dart';
 import 'package:flutter/material.dart';
 
 class CalculatorBtn extends StatelessWidget {
