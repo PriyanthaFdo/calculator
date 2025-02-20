@@ -1,5 +1,5 @@
 import 'package:calculator/constants/kjp_styles.dart';
-import 'package:calculator/views/mainview/calculator_btn.dart';
+import 'package:calculator/views/calculator_btn.dart';
 import 'package:flutter/material.dart';
 
 class Mainview extends StatelessWidget {
