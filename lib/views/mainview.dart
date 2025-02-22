@@ -28,6 +28,9 @@ class _MainviewState extends State<Mainview> {
     '-',
     '/',
     '*',
+  ];
+
+  static const _functions = [
     '=',
     '←',
     'C',
@@ -35,12 +38,18 @@ class _MainviewState extends State<Mainview> {
   ];
 
   String _displayValue = '0';
+  String _previousKey = '';
+  double _storedValue = 0;
+  String? _storedOperation;
+  bool _resetUI = false;
 
   void _keyPress(String key) {
     if (_numbers.contains(key)) {
       _numberPress(key);
     } else if (_operations.contains(key)) {
-      _operationSelect(key);
+      _operationPress(key);
+    } else if (_functions.contains(key)) {
+      _functionPress(key);
     } else if (key == '.') {
       // Decimal point
       if (!_displayValue.contains('.')) {
@@ -48,27 +57,67 @@ class _MainviewState extends State<Mainview> {
       }
     }
 
+    _previousKey = key;
+
     // update UI
     setState(() {});
   }
 
   void _numberPress(String key) {
-    if (_displayValue == '0') {
+    if (_displayValue == '0' || _resetUI) {
       _displayValue = key;
+      _resetUI = false;
     } else {
       _displayValue += key;
     }
   }
 
-  void _operationSelect(String key) {
-    switch (key) {
-      case 'C':
-        _displayValue = '0';
-        break;
-      case '←':
-        _displayValue = _displayValue.characters.skipLast(1).string;
-        break;
+  void _operationPress(String key) {
+    if (_previousKey == key) {
+      return;
+    } else if (_operations.contains(_previousKey)) {
+      _storedOperation = key;
+    } else {
+      switch (_storedOperation) {
+        case '+':
+          _displayValue = "${_storedValue + double.parse(_displayValue)}";
+          break;
+        case '-':
+          _displayValue = "${_storedValue - double.parse(_displayValue)}";
+          break;
+        case '/':
+          if (_displayValue == '0') {
+            _error();
+            return;
+          }
+          _displayValue = "${_storedValue / double.parse(_displayValue)}";
+          break;
+        case '*':
+          _displayValue = "${_storedValue * double.parse(_displayValue)}";
+          break;
+
+        default:
+      }
     }
+    _storedValue = double.parse(_displayValue);
+    _storedOperation = key;
+    _resetUI = true;
+  }
+
+  void _functionPress(String key) {
+    if (key == 'C') {
+      _displayValue = '0';
+    } else if (key == '←') {
+      _displayValue = _displayValue.characters.skipLast(1).string;
+    }
+  }
+
+  void _error() {
+    _displayValue = 'Error';
+    _storedOperation = null;
+    _previousKey = '';
+    _storedValue = 0;
+    _resetUI = true;
   }
 
   @override
