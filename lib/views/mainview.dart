@@ -129,7 +129,7 @@ class _MainviewState extends State<Mainview> {
       _displayValue = '0';
       _storedValue = 0;
       _storedOperation = "";
-      _operationDisplay="";
+      _operationDisplay = "";
     } else if (key == '←') {
       _displayValue = _displayValue.characters.skipLast(1).string;
     } else if (key == '=') {
@@ -206,6 +206,7 @@ class _MainviewState extends State<Mainview> {
                   children: [
                     Expanded(
                       child: CalculatorBtn(
+                        deactivate: true,
                         child: "mc",
                         onTap: () {},
                       ),
@@ -213,6 +214,7 @@ class _MainviewState extends State<Mainview> {
                     SizedBox(width: 10),
                     Expanded(
                       child: CalculatorBtn(
+                        deactivate: true,
                         child: "m+",
                         onTap: () {},
                       ),
@@ -220,6 +222,7 @@ class _MainviewState extends State<Mainview> {
                     SizedBox(width: 10),
                     Expanded(
                       child: CalculatorBtn(
+                        deactivate: true,
                         child: "m-",
                         onTap: () {},
                       ),
@@ -227,6 +230,7 @@ class _MainviewState extends State<Mainview> {
                     SizedBox(width: 10),
                     Expanded(
                       child: CalculatorBtn(
+                        deactivate: true,
                         child: "mr",
                         onTap: () {},
                       ),
@@ -363,6 +367,7 @@ class _MainviewState extends State<Mainview> {
                     SizedBox(width: 10),
                     Expanded(
                       child: CalculatorBtn(
+                        deactivate: true,
                         child: "%",
                         onTap: () => _keyPress('%'),
                       ),
