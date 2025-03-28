@@ -27,7 +27,7 @@ class _MainviewState extends State<Mainview> {
   static const _operations = [
     '+',
     '-',
-    '/',
+    '÷',
     'x',
   ];
 
@@ -109,7 +109,7 @@ class _MainviewState extends State<Mainview> {
       case '-':
         _displayValue = "${_storedValue - double.parse(_displayValue)}";
         break;
-      case '/':
+      case '÷':
         if (_displayValue == '0') {
           _error();
           return;
@@ -252,7 +252,7 @@ class _MainviewState extends State<Mainview> {
                     Expanded(
                       child: CalculatorBtn(
                         child: "÷",
-                        onTap: () => _keyPress('/'),
+                        onTap: () => _keyPress('÷'),
                       ),
                     ),
                     SizedBox(width: 10),
