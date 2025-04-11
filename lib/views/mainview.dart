@@ -39,12 +39,21 @@ class _MainviewState extends State<Mainview> {
     '+-',
   ];
 
+  static const _memoryFunctions = [
+    "mc",
+    "m+",
+    "m-",
+    "mr"
+  ];
+
   String _displayValue = '0';
   String _previousKey = '';
   String _operationDisplay = "";
   double _storedValue = 0;
   String? _storedOperation;
   bool _resetDisplay = false;
+
+  double? _memory;
 
   void _keyPress(String key) {
     try {
@@ -54,6 +63,8 @@ class _MainviewState extends State<Mainview> {
         _operationPress(key);
       } else if (_functions.contains(key)) {
         _functionPress(key);
+      } else if (_memoryFunctions.contains(key)) {
+        _memoryFunc(key);
       } else if (key == '.') {
         if (_resetDisplay) {
           _displayValue = '0.';
@@ -146,9 +157,9 @@ class _MainviewState extends State<Mainview> {
       } else {
         _displayValue = "-$_displayValue";
       }
-    }else if(key == "%"){
+    } else if (key == "%") {
       final val = double.tryParse(_displayValue);
-      if(val != null && _storedValue != 0){
+      if (val != null && _storedValue != 0) {
         _displayValue = "${(_storedValue * val) / 100}";
       }
     }
@@ -159,6 +170,31 @@ class _MainviewState extends State<Mainview> {
     _storedOperation = null;
     _previousKey = '';
     _storedValue = 0;
+    _resetDisplay = true;
+  }
+
+  void _memoryFunc(String key) {
+    switch (key) {
+      case "mc":
+        if (_previousKey == "mc") {
+          _memory = null;
+        }else{
+        _displayValue = "${_memory ?? 0}";
+        }
+        break;
+      case "m+":
+        _memory = (_memory ?? 0) + (double.tryParse(_displayValue) ?? 0);
+        _displayValue = "${_memory ?? 0}";
+        break;
+      case "m-":
+        _memory = (_memory ?? 0) - (double.tryParse(_displayValue) ?? 0);
+        _displayValue = "${_memory ?? 0}";
+        break;
+      case "mr":
+        _displayValue = "${_memory ?? 0}";
+        break;
+      default:
+    }
     _resetDisplay = true;
   }
 
@@ -188,18 +224,29 @@ class _MainviewState extends State<Mainview> {
                     border: Border.all(),
                     borderRadius: KjpStyles.borderRadius,
                   ),
-                  child: Column(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _operationDisplay,
+                        _memory != null ? "M" : "",
                         style: TextStyle(fontSize: 18, height: 0),
                       ),
-                      Text(
-                        _displayValue,
-                        style: TextStyle(fontSize: 30),
+                      Spacer(),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            _operationDisplay,
+                            style: TextStyle(fontSize: 18, height: 0),
+                          ),
+                          Text(
+                            _displayValue,
+                            style: TextStyle(fontSize: 30),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -211,33 +258,29 @@ class _MainviewState extends State<Mainview> {
                   children: [
                     Expanded(
                       child: CalculatorBtn(
-                        deactivate: true,
                         child: "mc",
-                        onTap: () {},
+                        onTap: () => _keyPress("mc"),
                       ),
                     ),
                     SizedBox(width: 10),
                     Expanded(
                       child: CalculatorBtn(
-                        deactivate: true,
                         child: "m+",
-                        onTap: () {},
+                        onTap: () => _keyPress("m+"),
                       ),
                     ),
                     SizedBox(width: 10),
                     Expanded(
                       child: CalculatorBtn(
-                        deactivate: true,
                         child: "m-",
-                        onTap: () {},
+                        onTap: () => _keyPress("m-"),
                       ),
                     ),
                     SizedBox(width: 10),
                     Expanded(
                       child: CalculatorBtn(
-                        deactivate: true,
                         child: "mr",
-                        onTap: () {},
+                        onTap: () => _keyPress("mr"),
                       ),
                     ),
                   ],
