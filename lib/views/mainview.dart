@@ -146,6 +146,11 @@ class _MainviewState extends State<Mainview> {
       } else {
         _displayValue = "-$_displayValue";
       }
+    }else if(key == "%"){
+      final val = double.tryParse(_displayValue);
+      if(val != null && _storedValue != 0){
+        _displayValue = "${(_storedValue * val) / 100}";
+      }
     }
   }
 
@@ -367,7 +372,6 @@ class _MainviewState extends State<Mainview> {
                     SizedBox(width: 10),
                     Expanded(
                       child: CalculatorBtn(
-                        deactivate: true,
                         child: "%",
                         onTap: () => _keyPress('%'),
                       ),
