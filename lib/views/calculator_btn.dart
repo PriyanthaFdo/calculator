@@ -1,4 +1,4 @@
-import 'package:calculator/utils/deactivate_widget.dart';
+import 'package:calculator/utils/widgets/deactivate_widget.dart';
 import 'package:flutter/material.dart';
 
 class CalculatorBtn extends StatelessWidget {

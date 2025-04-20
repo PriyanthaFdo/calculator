@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:calculator/core/constants/kjp_styles.dart';
 import 'package:calculator/core/pop_ups/error_view.dart';
 import 'package:calculator/views/calculator_btn.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class Mainview extends StatefulWidget {
@@ -178,8 +181,8 @@ class _MainviewState extends State<Mainview> {
       case "mc":
         if (_previousKey == "mc") {
           _memory = null;
-        }else{
-        _displayValue = "${_memory ?? 0}";
+        } else {
+          _displayValue = "${_memory ?? 0}";
         }
         break;
       case "m+":
@@ -198,18 +201,24 @@ class _MainviewState extends State<Mainview> {
     _resetDisplay = true;
   }
 
+  Widget responsiveHandler({required BuildContext context, required Widget child}) {
+    return Row(
+      children: [
+        if (kIsWeb || !Platform.isAndroid) Spacer(),
+        Expanded(child: child),
+        if (kIsWeb || !Platform.isAndroid) Spacer(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: responsiveHandler(
+        context: context,
         child: Container(
-          margin: KjpStyles.genericSpacing,
           padding: KjpStyles.genericSpacing,
-          decoration: BoxDecoration(
-            color: Colors.grey[600],
-            border: Border.all(),
-            borderRadius: KjpStyles.borderRadius,
-          ),
+          decoration: BoxDecoration(color: Colors.grey[600]),
           width: MediaQuery.of(context).orientation == Orientation.landscape //
               ? MediaQuery.of(context).size.height * 0.6
               : null,
