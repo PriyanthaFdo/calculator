@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:calculator/core/constants/k_values.dart';
 import 'package:calculator/core/constants/kjp_styles.dart';
 import 'package:calculator/core/pop_ups/error_view.dart';
 import 'package:calculator/views/calculator_btn.dart';
@@ -214,6 +215,12 @@ class _MainviewState extends State<Mainview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: kIsDebugMode
+          ? FloatingActionButton(
+              onPressed: () => throw "Test Error",
+              child: Icon(Icons.error),
+            )
+          : null,
       body: responsiveHandler(
         context: context,
         child: Container(
