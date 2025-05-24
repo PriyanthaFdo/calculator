@@ -21,34 +21,29 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Extract Flutter Version from .fvmrc
-        id: flutter-setup
-        run: |
-          # Check if the .fvmrc file exists and contains the flutter version
-          if [ -f .fvmrc ]; then
-            FLUTTER_VERSION=$(jq -r '.flutter' .fvmrc)
-            echo "Flutter version from .fvmrc: $FLUTTER_VERSION"
-          else
-            FLUTTER_VERSION="stable"
-            echo "No .fvmrc found, using Flutter stable version"
-          fi
-          echo "FLUTTER_VERSION=$FLUTTER_VERSION" >> $GITHUB_ENV
+      # - name: Extract Flutter Version from .fvmrc
+      #   id: flutter-setup
+      #   run: |
+      #     # Check if the .fvmrc file exists and contains the flutter version
+      #     if [ -f .fvmrc ]; then
+      #       FLUTTER_VERSION=$(jq -r '.flutter' .fvmrc)
+      #       echo "Flutter version from .fvmrc: $FLUTTER_VERSION"
+      #     else
+      #       FLUTTER_VERSION="stable"
+      #       echo "No .fvmrc found, using Flutter stable version"
+      #     fi
+      #     echo "FLUTTER_VERSION=$FLUTTER_VERSION" >> $GITHUB_ENV
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          flutter-version-file: pubspec.yaml
           cache: true # Cache Flutter dependencies
 
       - name: Extract Version from pubspec.yaml
         id: version
         run: |
-          # Ensure pubspec.yaml exists
-          if [ ! -f pubspec.yaml ]; then
-            echo "Error: pubspec.yaml not found!" >&2
-            exit 1
-          fi
-
           # Extract version from pubspec.yaml
           VERSION=$(grep '^version: ' pubspec.yaml | awk '{print $2}')
 
@@ -57,9 +52,6 @@ jobs:
             echo "Error: Failed to extract version from pubspec.yaml!" >&2
             exit 1
           fi
-          
-          # Debugging output
-          echo "Extracted version: $VERSION"
 
           # Replace + with _ to ensure a valid tag name
           VERSION_SANITIZED=$(echo "$VERSION" | sed 's/+/_/g')
